@@ -25,8 +25,8 @@ export default function Home() {
     }
   ]);
 
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -60,6 +60,7 @@ export default function Home() {
     ]);
     setImageBase64(null);
     setImagePreview(null);
+    setInput("");
   }
 
   function removeImage() {
@@ -94,20 +95,19 @@ export default function Home() {
       ? `🖼️ [Gambar dikirim]\n${userText || "(tanpa teks)"}`
       : userText;
 
-    const newMessages = [...messages, { role: "user", content: userMsgText }];
+    const newMessages: Msg[] = [
+      ...messages,
+      { role: "user", content: userMsgText }
+    ];
 
     setMessages(newMessages);
     setInput("");
     setLoading(true);
 
-    // history untuk backend
-    const history: ApiHistory[] = newMessages
-      .filter((m) => m.role !== "system")
-      .slice(-10)
-      .map((m) => ({
-        role: m.role,
-        content: m.content
-      }));
+    const history: ApiHistory[] = newMessages.slice(-10).map((m) => ({
+      role: m.role,
+      content: m.content
+    }));
 
     try {
       const res = await fetch("/api/chat", {
@@ -124,7 +124,10 @@ export default function Home() {
 
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.reply || "❌ Tidak ada respon." }
+        {
+          role: "assistant",
+          content: data.reply || "❌ Tidak ada respon dari AI."
+        }
       ]);
     } catch {
       setMessages((prev) => [
@@ -138,7 +141,6 @@ export default function Home() {
 
     setLoading(false);
 
-    // hapus gambar setelah dikirim
     setImageBase64(null);
     setImagePreview(null);
   }
@@ -209,7 +211,7 @@ export default function Home() {
 
         {imagePreview && (
           <div style={styles.previewBox}>
-            <img src={imagePreview} style={styles.previewImg} />
+            <img src={imagePreview} alt="Preview" style={styles.previewImg} />
             <button style={styles.removeImgBtn} onClick={removeImage}>
               ✖
             </button>
@@ -232,7 +234,9 @@ export default function Home() {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Tulis pertanyaan / paste error log / upload screenshot..."
             style={styles.input}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") sendMessage();
+            }}
           />
 
           <button style={styles.sendBtn} onClick={sendMessage}>
@@ -247,7 +251,9 @@ export default function Home() {
 
           <button
             style={styles.smallBtn}
-            onClick={() => alert("Kirim screenshot error biar AI debug otomatis.")}
+            onClick={() =>
+              alert("Tips: Kirim screenshot error atau log error biar AI debug.")
+            }
           >
             Tips
           </button>
@@ -256,7 +262,7 @@ export default function Home() {
             style={styles.smallBtn}
             onClick={() =>
               alert(
-                "Deploy cepat: GitHub → Vercel → Environment Variables OPENAI_API_KEY → Redeploy."
+                "Deploy cepat: GitHub → Vercel → Set OPENAI_API_KEY → Redeploy."
               )
             }
           >
@@ -301,7 +307,7 @@ export default function Home() {
   );
 }
 
-const styles: any = {
+const styles: Record<string, React.CSSProperties> = {
   wrap: {
     minHeight: "100vh",
     display: "flex",
