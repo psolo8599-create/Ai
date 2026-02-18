@@ -21,7 +21,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Halo 👋 Aku Dardcor AI Ultra.\n\nAku bisa:\n- Debug error semua bahasa\n- Buat kode HTML/CSS/JS\n- Bantu Android (Sketchware/Studio)\n- Analisis screenshot error/UI\n\nKirim error log atau screenshot sekarang."
+        "Halo 👋 Aku Dardcor AI Ultra.\n\nAku bisa:\n• Debug error semua bahasa\n• Coding semua bahasa\n• Android (Sketchware/Studio)\n• Web (HTML/CSS/JS)\n• Analisis screenshot error/UI\n\nKirim error log atau screenshot sekarang."
     }
   ]);
 
@@ -34,14 +34,14 @@ export default function Home() {
   const chatRef = useRef<HTMLDivElement | null>(null);
 
   const stars = useMemo(() => {
-    return Array.from({ length: 80 }).map((_, i) => ({
+    return Array.from({ length: 120 }).map((_, i) => ({
       id: i,
       left: rand(0, 100),
       top: rand(0, 100),
-      size: rand(1, 2.6),
-      opacity: rand(0.15, 1),
-      delay: rand(0, 5),
-      duration: rand(2, 7)
+      size: rand(1, 3.2),
+      opacity: rand(0.08, 0.9),
+      delay: rand(0, 4),
+      duration: rand(2, 8)
     }));
   }, []);
 
@@ -55,12 +55,12 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: "Chat dibersihkan. Silakan tanya lagi 😈"
+        content: "Chat dibersihkan 😈 Sekarang kirim error log atau kode."
       }
     ]);
+    setInput("");
     setImageBase64(null);
     setImagePreview(null);
-    setInput("");
   }
 
   function removeImage() {
@@ -134,20 +134,19 @@ export default function Home() {
         ...prev,
         {
           role: "assistant",
-          content: "❌ Error koneksi server. Cek API key di Vercel."
+          content: "❌ Error server. Pastikan OPENAI_API_KEY sudah benar."
         }
       ]);
     }
 
     setLoading(false);
-
     setImageBase64(null);
     setImagePreview(null);
   }
 
   return (
     <main style={styles.wrap}>
-      {/* Stars */}
+      {/* STAR FIELD */}
       <div style={styles.starLayer}>
         {stars.map((s) => (
           <span
@@ -166,20 +165,22 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Glow */}
-      <div style={styles.glowA}></div>
-      <div style={styles.glowB}></div>
-      <div style={styles.glowC}></div>
+      {/* NEBULA */}
+      <div style={styles.nebulaA}></div>
+      <div style={styles.nebulaB}></div>
+      <div style={styles.nebulaC}></div>
 
       <section style={styles.card}>
-        <div style={styles.topArea}>
-          <div style={styles.orbWrap}>
+        {/* HEADER */}
+        <div style={styles.header}>
+          <div style={styles.logoWrap}>
             <div style={styles.orb}>
-              <div style={styles.orbInner}></div>
-              <div style={styles.ring1}></div>
-              <div style={styles.ring2}></div>
-              <div style={styles.ring3}></div>
-              <div style={styles.scanLine}></div>
+              <div style={styles.orbCore}></div>
+              <div style={styles.orbGlow}></div>
+              <div style={styles.ringA}></div>
+              <div style={styles.ringB}></div>
+              <div style={styles.ringC}></div>
+              <div style={styles.scan}></div>
             </div>
           </div>
 
@@ -189,13 +190,14 @@ export default function Home() {
           </p>
         </div>
 
+        {/* CHAT */}
         <div style={styles.chat} ref={chatRef}>
           {messages.map((m, i) => (
             <div
               key={i}
               style={{
                 ...styles.bubble,
-                ...(m.role === "user" ? styles.user : styles.ai)
+                ...(m.role === "user" ? styles.userBubble : styles.aiBubble)
               }}
             >
               {m.content}
@@ -203,12 +205,15 @@ export default function Home() {
           ))}
 
           {loading && (
-            <div style={{ ...styles.bubble, ...styles.ai, opacity: 0.7 }}>
-              ⏳ AI sedang menganalisis...
+            <div style={{ ...styles.bubble, ...styles.aiBubble, opacity: 0.7 }}>
+              <span style={styles.dot}></span>
+              <span style={styles.dot}></span>
+              <span style={styles.dot}></span>
             </div>
           )}
         </div>
 
+        {/* IMAGE PREVIEW */}
         {imagePreview && (
           <div style={styles.previewBox}>
             <img src={imagePreview} alt="Preview" style={styles.previewImg} />
@@ -218,6 +223,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* INPUT */}
         <div style={styles.inputRow}>
           <label style={styles.uploadBtn}>
             📷
@@ -244,46 +250,35 @@ export default function Home() {
           </button>
         </div>
 
+        {/* BUTTONS */}
         <div style={styles.btnRow}>
           <button style={styles.smallBtn} onClick={clearChat}>
             Clear
           </button>
-
           <button
             style={styles.smallBtn}
             onClick={() =>
-              alert("Tips: Kirim screenshot error atau log error biar AI debug.")
+              alert("Tips: Paste error log, kode, atau upload screenshot.")
             }
           >
             Tips
           </button>
-
-          <button
-            style={styles.smallBtn}
-            onClick={() =>
-              alert(
-                "Deploy cepat: GitHub → Vercel → Set OPENAI_API_KEY → Redeploy."
-              )
-            }
-          >
-            Deploy
-          </button>
         </div>
 
         <footer style={styles.footer}>
-          ⚡ Next.js + Vercel Serverless + Vision AI
+          ⚡ Powered by Next.js • Vercel • OpenAI Vision
         </footer>
       </section>
 
       <style>{`
-        @keyframes starTwinkle {
-          0%, 100% { opacity: 0.2; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.9); }
+        @keyframes twinkle {
+          0%,100% { opacity: 0.15; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.8); }
         }
 
         @keyframes orbPulse {
-          0%, 100% { transform: scale(1); filter: brightness(1); }
-          50% { transform: scale(1.07); filter: brightness(1.15); }
+          0%,100% { transform: scale(1); filter: brightness(1); }
+          50% { transform: scale(1.05); filter: brightness(1.2); }
         }
 
         @keyframes spin {
@@ -296,11 +291,17 @@ export default function Home() {
           to { transform: translate(-50%, -50%) rotate(-360deg); }
         }
 
-        @keyframes scan {
+        @keyframes scanMove {
           0% { transform: translateY(-120px); opacity: 0; }
-          30% { opacity: 0.5; }
+          35% { opacity: 0.6; }
           60% { opacity: 0.25; }
           100% { transform: translateY(120px); opacity: 0; }
+        }
+
+        @keyframes dots {
+          0% { transform: translateY(0px); opacity: 0.3; }
+          50% { transform: translateY(-5px); opacity: 1; }
+          100% { transform: translateY(0px); opacity: 0.3; }
         }
       `}</style>
     </main>
@@ -313,9 +314,11 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "22px",
+    padding: "18px",
     position: "relative",
-    overflow: "hidden"
+    overflow: "hidden",
+    background:
+      "radial-gradient(circle at top, rgba(90,0,180,0.9), rgba(10,0,25,1) 65%, rgba(0,0,0,1))"
   },
 
   starLayer: {
@@ -329,138 +332,147 @@ const styles: Record<string, React.CSSProperties> = {
     position: "absolute",
     background: "white",
     borderRadius: "50%",
-    animationName: "starTwinkle",
+    animationName: "twinkle",
     animationIterationCount: "infinite",
     animationTimingFunction: "ease-in-out"
   },
 
-  glowA: {
-    position: "absolute",
-    width: "600px",
-    height: "600px",
-    background: "radial-gradient(circle, rgba(168,85,247,0.30), transparent)",
-    top: "-220px",
-    left: "-220px",
-    filter: "blur(55px)",
-    zIndex: 0
-  },
-
-  glowB: {
+  nebulaA: {
     position: "absolute",
     width: "650px",
     height: "650px",
-    background: "radial-gradient(circle, rgba(59,130,246,0.25), transparent)",
-    bottom: "-250px",
-    right: "-240px",
+    background:
+      "radial-gradient(circle, rgba(168,85,247,0.45), transparent 65%)",
+    top: "-250px",
+    left: "-250px",
     filter: "blur(65px)",
     zIndex: 0
   },
 
-  glowC: {
+  nebulaB: {
     position: "absolute",
-    width: "450px",
-    height: "450px",
-    background: "radial-gradient(circle, rgba(236,72,153,0.18), transparent)",
-    top: "40%",
-    left: "-160px",
-    filter: "blur(70px)",
+    width: "750px",
+    height: "750px",
+    background:
+      "radial-gradient(circle, rgba(59,130,246,0.35), transparent 65%)",
+    bottom: "-300px",
+    right: "-320px",
+    filter: "blur(75px)",
+    zIndex: 0
+  },
+
+  nebulaC: {
+    position: "absolute",
+    width: "500px",
+    height: "500px",
+    background:
+      "radial-gradient(circle, rgba(236,72,153,0.28), transparent 70%)",
+    top: "35%",
+    left: "-220px",
+    filter: "blur(85px)",
     zIndex: 0
   },
 
   card: {
     width: "100%",
-    maxWidth: "600px",
-    borderRadius: "28px",
-    padding: "24px",
-    background: "rgba(255,255,255,0.04)",
+    maxWidth: "520px",
+    borderRadius: "26px",
+    padding: "20px",
+    background: "rgba(255,255,255,0.05)",
     border: "1px solid rgba(255,255,255,0.10)",
-    backdropFilter: "blur(12px)",
-    boxShadow: "0 0 70px rgba(168,85,247,0.20)",
+    backdropFilter: "blur(14px)",
+    boxShadow: "0 0 80px rgba(168,85,247,0.25)",
     position: "relative",
     zIndex: 2
   },
 
-  topArea: {
+  header: {
     textAlign: "center",
     marginBottom: "14px"
   },
 
-  orbWrap: {
+  logoWrap: {
     display: "flex",
     justifyContent: "center",
     marginBottom: "10px"
   },
 
   orb: {
-    width: "165px",
-    height: "165px",
+    width: "140px",
+    height: "140px",
     borderRadius: "50%",
     position: "relative",
     overflow: "hidden",
     background:
-      "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.22), rgba(168,85,247,0.95), rgba(10,0,18,1))",
+      "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(168,85,247,0.95), rgba(0,0,0,1))",
     boxShadow: "0 0 70px rgba(168,85,247,0.85)",
-    animation: "orbPulse 3.2s ease-in-out infinite"
+    animation: "orbPulse 3.4s ease-in-out infinite"
   },
 
-  orbInner: {
+  orbCore: {
     position: "absolute",
     inset: "0",
     background:
-      "radial-gradient(circle at 70% 30%, rgba(59,130,246,0.22), transparent 55%)",
-    opacity: 0.8
+      "radial-gradient(circle at 70% 30%, rgba(59,130,246,0.20), transparent 55%)"
   },
 
-  ring1: {
+  orbGlow: {
     position: "absolute",
-    width: "240px",
-    height: "240px",
+    inset: 0,
+    background:
+      "radial-gradient(circle at 40% 60%, rgba(236,72,153,0.15), transparent 60%)"
+  },
+
+  ringA: {
+    position: "absolute",
+    width: "210px",
+    height: "210px",
     borderRadius: "50%",
-    border: "2px solid rgba(168,85,247,0.30)",
+    border: "2px solid rgba(168,85,247,0.35)",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     animation: "spin 7s linear infinite"
   },
 
-  ring2: {
+  ringB: {
     position: "absolute",
-    width: "280px",
-    height: "280px",
+    width: "250px",
+    height: "250px",
     borderRadius: "50%",
-    border: "2px solid rgba(59,130,246,0.18)",
+    border: "2px solid rgba(59,130,246,0.20)",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    animation: "spinReverse 11s linear infinite"
+    animation: "spinReverse 10s linear infinite"
   },
 
-  ring3: {
+  ringC: {
     position: "absolute",
-    width: "320px",
-    height: "320px",
+    width: "290px",
+    height: "290px",
     borderRadius: "50%",
-    border: "2px dashed rgba(236,72,153,0.12)",
+    border: "2px dashed rgba(236,72,153,0.14)",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    animation: "spin 16s linear infinite"
+    animation: "spin 14s linear infinite"
   },
 
-  scanLine: {
+  scan: {
     position: "absolute",
     width: "100%",
     height: "55px",
     left: 0,
     top: 0,
     background:
-      "linear-gradient(to bottom, transparent, rgba(255,255,255,0.20), transparent)",
-    opacity: 0.3,
-    animation: "scan 3.5s ease-in-out infinite"
+      "linear-gradient(to bottom, transparent, rgba(255,255,255,0.22), transparent)",
+    opacity: 0.35,
+    animation: "scanMove 3.4s ease-in-out infinite"
   },
 
   title: {
-    fontSize: "38px",
+    fontSize: "40px",
     fontWeight: 900,
     background: "linear-gradient(90deg, #a855f7, #3b82f6, #ec4899, #c084fc)",
     WebkitBackgroundClip: "text",
@@ -469,13 +481,13 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   subtitle: {
-    marginTop: "4px",
     fontSize: "13px",
-    opacity: 0.75
+    opacity: 0.8,
+    marginTop: "4px"
   },
 
   chat: {
-    height: "320px",
+    height: "330px",
     overflowY: "auto",
     padding: "14px",
     borderRadius: "18px",
@@ -493,19 +505,30 @@ const styles: Record<string, React.CSSProperties> = {
     lineHeight: "1.45",
     whiteSpace: "pre-wrap",
     wordBreak: "break-word",
-    maxWidth: "86%"
+    maxWidth: "85%"
   },
 
-  user: {
+  userBubble: {
     alignSelf: "flex-end",
-    background: "linear-gradient(135deg, #2563eb, #a855f7)",
-    border: "1px solid rgba(99,102,241,0.55)"
+    background: "linear-gradient(135deg, rgba(59,130,246,0.95), rgba(168,85,247,0.95))",
+    border: "1px solid rgba(99,102,241,0.55)",
+    boxShadow: "0 0 22px rgba(59,130,246,0.25)"
   },
 
-  ai: {
+  aiBubble: {
     alignSelf: "flex-start",
     background: "rgba(255,255,255,0.07)",
     border: "1px solid rgba(255,255,255,0.10)"
+  },
+
+  dot: {
+    width: "7px",
+    height: "7px",
+    borderRadius: "50%",
+    background: "rgba(255,255,255,0.8)",
+    display: "inline-block",
+    marginRight: "6px",
+    animation: "dots 1s infinite"
   },
 
   previewBox: {
@@ -540,7 +563,7 @@ const styles: Record<string, React.CSSProperties> = {
   inputRow: {
     display: "flex",
     gap: "10px",
-    marginTop: "16px"
+    marginTop: "14px"
   },
 
   uploadBtn: {
@@ -568,7 +591,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
 
   sendBtn: {
-    width: "56px",
+    width: "58px",
     borderRadius: "14px",
     border: "none",
     cursor: "pointer",
@@ -576,7 +599,7 @@ const styles: Record<string, React.CSSProperties> = {
     color: "white",
     fontSize: "18px",
     fontWeight: 800,
-    boxShadow: "0 0 24px rgba(236,72,153,0.35)"
+    boxShadow: "0 0 26px rgba(236,72,153,0.35)"
   },
 
   btnRow: {
@@ -593,13 +616,13 @@ const styles: Record<string, React.CSSProperties> = {
     background: "rgba(255,255,255,0.05)",
     color: "white",
     cursor: "pointer",
-    fontWeight: 700
+    fontWeight: 800
   },
 
   footer: {
-    marginTop: "18px",
+    marginTop: "14px",
     textAlign: "center",
     fontSize: "12px",
-    opacity: 0.55
+    opacity: 0.6
   }
 };
