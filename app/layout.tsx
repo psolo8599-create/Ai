@@ -1,11 +1,15 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Dardcor AI • Coding Debugger",
-  description: "AI Multifungsi Fokus Coding & Debugging"
+  title: "XTROM AI • Red Coding Debugger",
+  description: "XTROM AI - AI Multifungsi Fokus Coding, Debugging, dan Analisis Screenshot"
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="id">
       <body>{children}</body>

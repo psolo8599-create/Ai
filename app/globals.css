@@ -1,25 +1,58 @@
-* {
+/* XTROM AI - GLOBAL STYLE */
+
+html,
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-}
-
-body {
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #1a0035, #05000c 55%, #000);
+  height: 100%;
+  background: #000;
   color: white;
-  overflow-x: hidden;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-::selection {
-  background: rgba(168, 85, 247, 0.45);
+* {
+  box-sizing: border-box;
 }
 
+button,
+input {
+  font-family: inherit;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar (Chrome/Android) */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.4);
+}
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.55);
-  border-radius: 20px;
+  background: rgba(255, 0, 0, 0.35);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 0, 0, 0.6);
+}
+
+/* Text selection (biar aesthetic) */
+::selection {
+  background: rgba(255, 0, 0, 0.35);
+  color: white;
+}
+
+/* Disable ugly blue tap highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
